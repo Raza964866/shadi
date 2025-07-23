@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindLove - Find Your Perfect Match</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        
+        /* Mobile Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #ff4757;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 2rem;
+                transition: left 0.3s ease;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                z-index: 999;
+                overflow-y: auto;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links a {
+                padding: 1rem 2rem !important;
+                border-bottom: 1px solid #eee;
+                width: 100%;
+                text-align: center;
+                display: block !important;
+                margin: 0 !important;
+            }
+            
+            /* Mobile header adjustments */
+            header nav {
+                padding: 0 1rem !important;
+            }
+            
+            /* Mobile hero section */
+            main {
+                padding: 2rem 1rem !important;
+            }
+            
+            section h1 {
+                font-size: 2rem !important;
+            }
+            
+            /* Mobile filters */
+            .filters-container {
+                flex-direction: column !important;
+                gap: 1rem !important;
+                align-items: stretch !important;
+            }
+            
+            .filter-item {
+                width: 100%;
+            }
+            
+            /* Mobile grid */
+            .profiles-grid {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            /* Mobile cards */
+            .profile-card {
+                margin: 0 !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .nav-links a {
+                font-size: 1rem;
+                padding: 15px 20px !important;
+            }
+            
+            /* Better mobile spacing for filter section */
+            .filters-container {
+                padding: 0 !important;
+            }
+            
+            .filters-container select,
+            .filters-container input {
+                padding: 0.75rem 1rem !important;
+                font-size: 1rem !important;
+                border-radius: 10px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            section h1 {
+                font-size: 1.8rem !important;
+            }
+            
+            main {
+                padding: 1rem 0.5rem !important;
+            }
+            
+            header nav {
+                padding: 0 0.5rem !important;
+            }
+            
+            .nav-links a {
+                padding: 12px 15px !important;
+                font-size: 0.9rem !important;
+            }
+            
+            /* Improve mobile card layout */
+            .profiles-grid {
+                gap: 1rem !important;
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header style="background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 1rem 0; position: sticky; top: 0; z-index: 100;">
+        <nav style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 2rem;">
+            <!-- Logo -->
+            <div style="display: flex; align-items: center; font-size: 1.5rem; font-weight: bold; color: #333;">
+                <span style="color: #ff4757; margin-right: 0.5rem;">♡</span>
+                FindLove
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <!-- Navigation Links -->
+            <div class="nav-links" id="navLinks">
+                <a href="{{ url_for('user.index') }}" style="text-decoration: none; color: #666; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s ease;">
+                    🏠 Home
+                </a>
+                <a href="{{ url_for('user.find_match') }}" style="text-decoration: none; color: #ff4757; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 8px; background: #fff0f0; font-weight: 500;">
+                    💕 Find Match
+                </a>
+                <a href="{{ url_for('user.contact') }}" style="text-decoration: none; color: #666; padding: 0.5rem 1rem; border-radius: 8px;">Contact</a>
+                <a href="{{ url_for('user.about') }}" style="text-decoration: none; color: #666; padding: 0.5rem 1rem; border-radius: 8px;">About us</a>
+                <a href="{{ url_for('user.view_profile') }}" style="text-decoration: none; color: #666; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 8px;">
+                    👤 Profile
+                </a>
+                <a href="{{ url_for('user.logout') }}" style="background: linear-gradient(135deg, #ff4757, #ff3838); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 25px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3); text-decoration: none; display: inline-block;" 
+                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(255, 71, 87, 0.4)'"
+                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(255, 71, 87, 0.3)'">
+                    Logout
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main style="max-width: 1200px; margin: 0 auto; padding: 3rem 2rem;">
+        <!-- Hero Section -->
+        <section style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 3rem; font-weight: 700; color: #2c3e50; margin-bottom: 1rem;">Find Your Perfect Match</h1>
+            <p style="font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto;">Discover people who share your interests</p>
+        </section>
+
+        <!-- Filters -->
+        <section style="background: white; padding: 1.5rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); margin-bottom: 3rem;">
+            <form method="GET" action="{{ url_for('user.find_match') }}" id="filterForm">
+                <div class="filters-container" style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; justify-content: center;">
+                    <!-- Gender Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Gender:</label>
+                        <select name="gender" onchange="submitFilters()" style="padding: 0.5rem 1rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333; cursor: pointer;">
+                            <option value="">All Genders</option>
+                            {% for gender in genders %}
+                                <option value="{{ gender }}" {{ 'selected' if current_filters.gender == gender else '' }}>{{ gender }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Religion Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Religion:</label>
+                        <select name="religion" onchange="submitFilters()" style="padding: 0.5rem 1rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333; cursor: pointer;">
+                            <option value="">All Religions</option>
+                            {% for religion in religions %}
+                                <option value="{{ religion }}" {{ 'selected' if current_filters.religion == religion else '' }}>{{ religion }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Caste Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Caste:</label>
+                        <select name="caste" onchange="submitFilters()" style="padding: 0.5rem 1rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333; cursor: pointer;">
+                            <option value="">All Castes</option>
+                            {% for caste in castes %}
+                                <option value="{{ caste }}" {{ 'selected' if current_filters.caste == caste else '' }}>{{ caste }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Marital Status Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Marital Status:</label>
+                        <select name="marital_status" onchange="submitFilters()" style="padding: 0.5rem 1rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333; cursor: pointer;">
+                            <option value="">All Status</option>
+                            {% for status in marital_statuses %}
+                                <option value="{{ status }}" {{ 'selected' if current_filters.marital_status == status else '' }}>{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Location Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Location:</label>
+                        <select name="location" onchange="submitFilters()" style="padding: 0.5rem 1rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333; cursor: pointer;">
+                            <option value="">All Locations</option>
+                            {% for location in locations %}
+                                <option value="{{ location }}" {{ 'selected' if current_filters.location == location else '' }}>{{ location }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Job/Occupation Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Occupation:</label>
+                        <select name="occupation" onchange="submitFilters()" style="padding: 0.5rem 1rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333; cursor: pointer;">
+                            <option value="">All Occupations</option>
+                            {% for occupation in occupations %}
+                                <option value="{{ occupation }}" {{ 'selected' if current_filters.occupation == occupation else '' }}>{{ occupation }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Family Background Filter -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Family:</label>
+                        <select name="family_background" onchange="submitFilters()" style="padding: 0.5rem 1rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333; cursor: pointer;">
+                            <option value="">All Families</option>
+                            {% for family in family_backgrounds %}
+                                <option value="{{ family }}" {{ 'selected' if current_filters.family_background == family else '' }}>{{ family }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <!-- Age Range Filters -->
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <label style="font-weight: 500; color: #555;">Age:</label>
+                        <input type="number" name="min_age" placeholder="Min" value="{{ current_filters.min_age or '' }}" onchange="submitFilters()" style="width: 70px; padding: 0.5rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333;">
+                        <span style="color: #666;">-</span>
+                        <input type="number" name="max_age" placeholder="Max" value="{{ current_filters.max_age or '' }}" onchange="submitFilters()" style="width: 70px; padding: 0.5rem; border: 2px solid #e1e8ed; border-radius: 8px; background: white; color: #333;">
+                    </div>
+                    
+                    <!-- Clear Filters Button -->
+                    <button type="button" onclick="clearFilters()" style="background: #f1f5f9; color: #64748b; border: 2px solid #e1e8ed; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;" 
+                            onmouseover="this.style.background='#e2e8f0'" onmouseout="this.style.background='#f1f5f9'">
+                        🗑️ Clear All
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Profile Cards Grid -->
+<section class="profiles-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+            {% if profiles %}
+                {% for profile in profiles %}
+                    <div class="profile-card" style="background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s ease; position: relative;" 
+                         onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.15)'"
+                         onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.1)'">
+                        <div style="position: relative; height: 300px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <div style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); padding: 8px; border-radius: 50%; backdrop-filter: blur(10px);">
+                                {% if not has_full_access %} 🔒 {% endif %}
+                            </div>
+                            {% if profile.image_url %}
+                                <img src="{{ url_for('static', filename=profile.image_url) }}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;{% if not has_full_access %} filter: blur(8px);{% endif %}">
+                            {% else %}
+                                <div style="width: 120px; height: 120px; background: #8B0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;{% if not has_full_access %} filter: blur(4px);{% endif %}">
+                                    👤
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div style="padding: 1.5rem;">
+                            <!-- Always show: Profile name and age -->
+                            <h3 style="font-size: 1.5rem; font-weight: 600; color: #2c3e50; margin-bottom: 0.5rem;">{{ profile.full_name or 'Anonymous' }}{% if profile.age %}, {{ profile.age }}{% endif %}</h3>
+                            
+                            <!-- Always show: Occupation -->
+                            <p style="color: #555; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                💼 {{ profile.occupation or 'Occupation not specified' }}
+                            </p>
+                            
+                            {% if has_full_access %}
+                                <!-- Full access: Show location -->
+                                <p style="color: #666; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    📍 {{ profile.location or 'Location not specified' }}
+                                </p>
+                                
+                                <!-- Full access: Show religion and marital status badges -->
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+                                    {% if profile.religion %}
+                                        <span style="background: linear-gradient(135deg, #ff9a9e, #fecfef); color: #333; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">
+                                            {{ profile.religion }}
+                                        </span>
+                                    {% endif %}
+                                    {% if profile.marital_status %}
+                                        <span style="background: linear-gradient(135deg, #a8edea, #fed6e3); color: #333; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: 500;">
+                                            {{ profile.marital_status }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <!-- Locked state: Show locked message for additional details -->
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+                                    <span style="background: #f1f5f9; color: #64748b; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.3rem;">
+                                        🔒 Location
+                                    </span>
+                                    <span style="background: #f1f5f9; color: #64748b; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.3rem;">
+                                        🔒 Religion
+                                    </span>
+                                    <span style="background: #f1f5f9; color: #64748b; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.3rem;">
+                                        🔒 Marital Status
+                                    </span>
+                                </div>
+                            {% endif %}
+                            {% if has_full_access %}
+                                <button onclick="window.location.href='{{ url_for('user.view_other_profile', profile_id=profile.id) }}'" 
+                                        style="width: 100%; background: linear-gradient(135deg, #00b894, #00a085); color: white; border: none; padding: 1rem; border-radius: 12px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;" 
+                                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0, 184, 148, 0.4)'"
+                                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    View Full Profile
+                                </button>
+                            {% else %}
+                                <button onclick="window.location.href='{{ url_for('user.payment') }}'" 
+                                        style="width: 100%; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 1rem; border-radius: 12px; font-weight: 500; cursor: pointer; transition: all 0.3s ease;" 
+                                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(102, 126, 234, 0.4)'"
+                                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    🔒 Pay to Unlock
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; color: #666; grid-column: 1 / -1; padding: 3rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💔</div>
+                    <h3>No Profiles Found</h3>
+                    <p>Try adjusting your search filters or check back later.</p>
+                </div>
+            {% endif %}
+        </section>
+
+        <!-- Unlock Full Access Banner -->
+        {% if not has_full_access %}
+        <section style="background: linear-gradient(135deg, #ff4757, #ff3838); border-radius: 20px; padding: 2rem; margin: 3rem 0; color: white; text-align: center; position: relative; overflow: hidden;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 2rem;">👑</span>
+                <h2 style="font-size: 2rem; font-weight: 700; margin: 0;">Unlock Full Access</h2>
+            </div>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">View complete profiles, see all photos, and connect directly with your matches!</p>
+            <button onclick="window.location.href='{{ url_for('user.payment') }}'" 
+                    style="background: white; color: #ff4757; border: none; padding: 1rem 3rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                💰 Pay Now
+            </button>
+        </section>
+        {% else %}
+        <section style="background: linear-gradient(135deg, #00b894, #00a085); border-radius: 20px; padding: 2rem; margin: 3rem 0; color: white; text-align: center; position: relative; overflow: hidden;">
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                <span style="font-size: 2rem;">✅</span>
+                <h2 style="font-size: 2rem; font-weight: 700; margin: 0;">Full Access Active</h2>
+            </div>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; opacity: 0.9;">You have unlimited access to all profiles and features!</p>
+            <button onclick="window.location.href='{{ url_for('user.send_profile') }}'" 
+                    style="background: white; color: #00b894; border: none; padding: 1rem 3rem; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;"
+                    onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                👤 Create Your Profile
+            </button>
+        </section>
+        {% endif %}
+    </main>
+    
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Filter functionality
+        function submitFilters() {
+            document.getElementById('filterForm').submit();
+        }
+        
+        function clearFilters() {
+            // Clear all form inputs
+            const form = document.getElementById('filterForm');
+            const inputs = form.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.value = '';
+            });
+            // Submit the form to show all results
+            form.submit();
+        }
+        
+        // Close mobile menu when clicking on a link
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const mobileMenu = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburger');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                });
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('nav') && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

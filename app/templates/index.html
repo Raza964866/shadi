@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadi.com - Find Your Perfect Life Partner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background: #fff;
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            color: #dc2626;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #dc2626;
+        }
+        
+        .btn-register {
+            background: #dc2626;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-register:hover {
+            background: #b91c1c;
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('../static/images/Background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            min-height: 600px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .btn-find-match {
+            background: #dc2626;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .btn-find-match:hover {
+            background: #b91c1c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        }
+        
+        /* Features Section */
+        .features {
+            background: #f8f9fa;
+            padding: 80px 5%;
+        }
+        
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #dc2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        .feature h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 80px 5%;
+            background: white;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .stat h3 {
+            font-size: 3rem;
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+        
+        .stat p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* Steps Section */
+        .steps {
+            background: #f8f9fa;
+            padding: 80px 5%;
+            text-align: center;
+        }
+        
+        .steps h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 60px;
+        }
+        
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: #dc2626;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .step h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .step p {
+            color: #666;
+        }
+        
+        /* Success Stories */
+        .stories {
+            padding: 80px 5%;
+            background: white;
+            text-align: center;
+        }
+        
+        .stories h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 60px;
+        }
+        
+        .stories-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .story {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .story:hover {
+            transform: translateY(-10px);
+        }
+        
+        .story-img {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #e91e63, #f06292);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .story-content {
+            padding: 25px;
+        }
+        
+        .story-content h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .story-content p {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        
+        .story-date {
+            color: #e91e63;
+            font-weight: bold;
+        }
+        
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, #fce4ec, #f8bbd9);
+            padding: 80px 5%;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .btn-create-profile {
+            background: #e91e63;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .btn-create-profile:hover {
+            background: #c2185b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+        }
+        
+        .login-link {
+            color: #e91e63;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 60px 5% 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-section h3 {
+            color: #e91e63;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section p {
+            color: #ccc;
+            line-height: 1.8;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #e91e63;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #888;
+        }
+        
+        /* Mobile Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #dc2626;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+        
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem 3%;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero {
+                padding-top: 100px; /* Account for fixed navbar */
+            }
+            
+            .features, .stats, .steps, .stories, .cta, .footer {
+                padding: 50px 3%;
+            }
+            
+            .steps h2, .stories h2, .cta h2 {
+                font-size: 2rem;
+            }
+            
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .story-img {
+                height: 200px;
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .hamburger {
+                display: flex;
+            }
+            
+            .navbar {
+                padding: 1rem 3%;
+                position: relative;
+            }
+            
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 20px 0;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            .nav-links a {
+                padding: 10px 20px;
+                border-bottom: 1px solid #f0f0f0;
+                width: 100%;
+                text-align: center;
+                display: block;
+            }
+            
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+            
+            .btn-register {
+                margin: 10px 20px;
+                text-align: center;
+                display: block;
+                width: calc(100% - 40px);
+            }
+            
+            .hero {
+                margin-top: 0;
+                padding: 120px 20px 40px; /* More top padding for mobile */
+                min-height: 70vh;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+                line-height: 1.2;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 1rem 15px;
+            }
+            
+            .hero {
+                padding: 100px 15px 30px;
+                min-height: 60vh;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+                margin-bottom: 1.2rem;
+            }
+            
+            .features-container,
+            .stats-container,
+            .steps-container,
+            .stories-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .btn-find-match,
+            .btn-create-profile {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+            
+            .features, .stats, .steps, .stories, .cta, .footer {
+                padding: 40px 15px;
+            }
+            
+            .feature, .story {
+                margin-bottom: 20px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            
+            .hero p {
+                font-size: 0.85rem;
+            }
+            
+            .btn-find-match,
+            .btn-create-profile {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flashMessages" style="position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 2000; width: 90%; max-width: 600px; transition: opacity 0.5s ease;">
+                {% for category, message in messages %}
+                    <div class="flash-message" style="padding: 12px 20px; margin-bottom: 10px; border-radius: 8px; text-align: center; font-weight: 500; cursor: pointer;
+                                {% if category == 'error' %}background: #fee2e2; color: #dc2626; border: 1px solid #fecaca;
+                                {% elif category == 'warning' %}background: #fef3c7; color: #d97706; border: 1px solid #fde68a;
+                                {% else %}background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0;{% endif %}" 
+                         onclick="this.style.display='none'" title="Click to dismiss">
+                        {{ message }}
+                        <span style="float: right; font-weight: bold; margin-left: 10px;">&times;</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <script>
+                // Auto-hide flash messages after 5 seconds
+                setTimeout(function() {
+                    var flashContainer = document.getElementById('flashMessages');
+                    if (flashContainer) {
+                        flashContainer.style.opacity = '0';
+                        setTimeout(function() {
+                            flashContainer.style.display = 'none';
+                        }, 500); // Wait for fade out animation
+                    }
+                }, 5000); // Show for 5 seconds
+                
+                // Allow manual dismissal by clicking
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('flash-message') || e.target.parentElement.classList.contains('flash-message')) {
+                        var message = e.target.classList.contains('flash-message') ? e.target : e.target.parentElement;
+                        message.style.opacity = '0';
+                        setTimeout(function() {
+                            message.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            </script>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">💖 Shadi.com</a>
+        <div class="hamburger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a href="{{ url_for('user.index') }}">Home</a>
+            <a href="{{ url_for('user.find_match') }}">Find match</a>
+            <a href="{{ url_for('user.about') }}">About Us</a>
+            <a href="{{ url_for('user.send_profile') }}">Send Profile</a>
+            <a href="{{ url_for('user.contact') }}">Contact Us</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('user.view_profile') }}">Profile</a>
+                <a href="{{ url_for('user.logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('user.login') }}">Login</a>
+                <a href="{{ url_for('user.sign_up') }}" class="btn-register">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Find Your Perfect Life Partner</h1>
+        <p>Pakistan's Most Trusted Matrimonial Platform</p>
+        <a href="{{ url_for('user.find_match') }}" class="btn-find-match">Find Match</a>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="features-container">
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                <h3>100% Verified Profiles</h3>
+                <p>Every profile is thoroughly verified to ensure you meet genuine people</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <h3>Privacy & Safety</h3>
+                <p>Your privacy is our top priority with advanced security measures</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <h3>Easy to Use Platform</h3>
+                <p>Simple and intuitive interface for all age groups</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat">
+                <h3>1M+</h3>
+                <p>Active Users</p>
+            </div>
+            <div class="stat">
+                <h3>500K+</h3>
+                <p>Success Stories</p>
+            </div>
+            <div class="stat">
+                <h3>15+</h3>
+                <p>Years of Trust</p>
+            </div>
+            <div class="stat">
+                <h3>100%</h3>
+                <p>Profile Verification</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Steps Section -->
+    <section class="steps">
+        <h2>Simple Steps to Find Your Match</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-icon">👤</div>
+                <h4>Step 1</h4>
+                <p>Create Profile</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">🔍</div>
+                <h4>Step 2</h4>
+                <p>Browse Matches</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">🔒</div>
+                <h4>Step 3</h4>
+                <p>Connect Safely</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">💕</div>
+                <h4>Step 4</h4>
+                <p>Find Your Partner</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Stories -->
+    <section class="stories">
+        <h2>Success Stories</h2>
+        <div class="stories-container">
+            <div class="story">
+                <div class="story-img">👫</div>
+                <div class="story-content">
+                    <h4>Sarah & Ahmed</h4>
+                    <p>"We found each other on Shadi.com and got married in 2023. Thank you for bringing us together!"</p>
+                    <div class="story-date">Married: January 2023</div>
+                </div>
+            </div>
+            <div class="story">
+                <div class="story-img">👫</div>
+                <div class="story-content">
+                    <h4>Fatima & Hassan</h4>
+                    <p>"We found each other on Shadi.com and got married in 2023. Thank you for bringing us together!"</p>
+                    <div class="story-date">Married: January 2023</div>
+                </div>
+            </div>
+            <div class="story">
+                <div class="story-img">👫</div>
+                <div class="story-content">
+                    <h4>Aisha & Bilal</h4>
+                    <p>"We found each other on Shadi.com and got married in 2023. Thank you for bringing us together!"</p>
+                    <div class="story-date">Married: January 2023</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>Start Your Journey Today</h2>
+        <p>Your perfect match could be just one click away</p>
+        <a href="{{ url_for('user.send_profile') }}" class="btn-create-profile">Create Free Profile</a>
+        <br>
+        <p style="margin-top: 20px;">Already a member? <a href="{{ url_for('user.login') }}" class="login-link">Login</a></p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Shadi.com</h3>
+                <p>Pakistan's most trusted matrimonial platform helping people find their perfect life partners.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Search Profiles</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Premium Membership</a></li>
+                    <li><a href="#">Mobile App</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Privacy & Terms</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Security</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>📧 support@shadi.com</p>
+                <p>📞 +92 123 456 7890</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Shadi.com. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger');
+            
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+        
+        // Close mobile menu when clicking on a link
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const mobileMenu = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                });
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.navbar') && mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarriageMatch - Create Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.25rem;
+            color: #334155;
+        }
+
+        .logo::before {
+            content: "💙";
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .sign-in-btn {
+            background: #3b82f6;
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sign-in-btn:hover {
+            background: #2563eb;
+            color: white !important;
+        }
+
+        .main-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .header p {
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .step-indicator {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .section-title {
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background-color: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #2563eb);
+            width: 33.33%;
+            border-radius: 3px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .photo-upload {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .photo-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px dashed #cbd5e1;
+        }
+
+        .camera-icon {
+            font-size: 2rem;
+            color: #94a3b8;
+        }
+
+        .photo-upload h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #334155;
+        }
+
+        .photo-upload p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .upload-btn:hover {
+            background: #2563eb;
+        }
+
+        .upload-btn::before {
+            content: "☁";
+            margin-right: 0.5rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .phone-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .country-code {
+            flex: 0 0 80px;
+        }
+
+        .phone-number {
+            flex: 1;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .privacy-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .privacy-icon {
+            background: #3b82f6;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .privacy-content h3 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .privacy-content p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .privacy-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .privacy-links a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .privacy-links a:hover {
+            text-decoration: underline;
+        }
+
+        .create-btn {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        .create-btn:hover {
+            background: #2563eb;
+        }
+
+        .terms-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .terms-text a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 3px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: #64748b;
+            transition: 0.3s;
+        }
+
+        /* Flash messages styling */
+        .flash-messages {
+            max-width: 600px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .flash-message {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .flash-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .flash-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .flash-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .main-container {
+                padding: 0 0.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+
+            .header h1 {
+                font-size: 1.75rem;
+            }
+
+            .privacy-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .privacy-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 0.5rem;
+            }
+
+            .form-container {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+
+            .phone-input {
+                flex-direction: column;
+            }
+
+            .country-code {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">MarriageMatch</div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('user.index') }}">Home</a></li>
+                <li><a href="{{ url_for('user.about') }}">About Us</a></li>
+                <li><a href="{{ url_for('user.contact') }}">Contact</a></li>
+                <li><a href="{{ url_for('user.login') }}" class="sign-in-btn">Sign In</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="main-container">
+        <div class="header">
+            <h1>Create Your Profile</h1>
+            <p>Start Your Marriage Journey Today</p>
+        </div>
+        
+        <p class="description">
+            Please fill out the form below with correct and honest details. This will help us show your profile to the right matches.
+        </p>
+
+
+        <div class="form-container">
+            {% if not has_full_access %}
+            <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; text-align: center;">
+                <h3 style="margin-bottom: 1rem; color: white;">🔒 Payment Required</h3>
+                <p style="margin-bottom: 1.5rem; opacity: 0.9;">To create your profile and unlock all features, you need to pay!</p>
+                <a href="{{ url_for('user.payment') }}" style="background: white; color: #ff6b6b; text-decoration: none; padding: 0.75rem 2rem; border-radius: 25px; font-weight: 600; display: inline-block; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">💰 Pay Now</a>
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="{{ url_for('user.send_profile') }}" enctype="multipart/form-data">
+                <div class="photo-upload">
+                    <div class="photo-circle">
+                        <span class="camera-icon">📷</span>
+                    </div>
+                    <h3>Upload Your Image</h3>
+                    <p>Make sure it is a clear and decent photo</p>
+                    <input type="file" id="profile_image" name="profile_image" accept="image/*" style="display: none;">
+                    <button type="button" class="upload-btn">Upload Photo</button>
+                </div>
+                {{ csrf_token() if csrf_token }}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="As per your CNIC" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" placeholder="Your age" min="18" max="100" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <select id="city" name="city" required>
+                            <option value="">Select your city</option>
+                            <option value="karachi">Karachi</option>
+                            <option value="lahore">Lahore</option>
+                            <option value="islamabad">Islamabad</option>
+                            <option value="faisalabad">Faisalabad</option>
+                            <option value="rawalpindi">Rawalpindi</option>
+                            <option value="multan">Multan</option>
+                            <option value="peshawar">Peshawar</option>
+                            <option value="quetta">Quetta</option>
+                            <option value="sialkot">Sialkot</option>
+                            <option value="hyderabad">Hyderabad</option>
+                            <option value="gujranwala">Gujranwala</option>
+                            <option value="sukkur">Sukkur</option>
+                            <option value="larkana">Larkana</option>
+                            <option value="sargodha">Sargodha</option>
+                            <option value="kasur">Kasur</option>
+                            <option value="mardan">Mardan</option>
+                            <option value="mingora">Mingora</option>
+                            <option value="okara">Okara</option>
+                            <option value="nawabshah">Nawabshah</option>
+                            <option value="sahiwal">Sahiwal</option>
+                            <option value="mirpur_khas">Mirpur Khas</option>
+                            <option value="chiniot">Chiniot</option>
+                            <option value="jacobabad">Jacobabad</option>
+                            <option value="shikarpur">Shikarpur</option>
+                            <option value="kohat">Kohat</option>
+                            <option value="dg_khan">D.G Khan</option>
+                            <option value="gujrat">Gujrat</option>
+                            <option value="muzaffarabad">Muzaffarabad</option>
+                            <option value="mirpur">Mirpur AJK</option>
+                            <option value="gilgit">Gilgit</option>
+                            <option value="skardu">Skardu</option>
+                            <option value="abbottabad">Abbottabad</option>
+                            <option value="mansehra">Mansehra</option>
+                            <option value="attock">Attock</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <div class="phone-input">
+                            <select class="country-code">
+                                <option value="+92">+92</option>
+                                <option value="+1">+1</option>
+                                <option value="+44">+44</option>
+                            </select>
+                            <input type="tel" class="phone-number" name="phone" placeholder="Enter phone number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select your gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="marital_status">Marital Status</label>
+                        <select id="marital_status" name="marital_status" required>
+                            <option value="">Select marital status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="occupation">Job/Occupation</label>
+                        <input type="text" id="occupation" name="occupation" placeholder="Your work or profession" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cnic">CNIC Number</label>
+                        <input type="text" id="cnic" name="cnic" placeholder="XXXXX-XXXXXXX-X" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="religion">Religion</label>
+                        <select id="religion" name="religion">
+                            <option value="">Select your religion</option>
+                            <option value="islam">Islam</option>
+                            <option value="christianity">Christianity</option>
+                            <option value="hinduism">Hinduism</option>
+                            <option value="sikhism">Sikhism</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="caste">Caste (Optional)</label>
+                        <input type="text" id="caste" name="caste" placeholder="If you want caste-based matching">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="address">Complete Address</label>
+                        <textarea id="address" name="address" placeholder="House number, street, area, etc."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="family">Family Background</label>
+                        <select id="family" name="family">
+                            <option value="">Select family background</option>
+                            <option value="middleclass">Middle Class</option>
+                            <option value="moderate">Moderate</option>
+                            <option value="liberal">Liberal</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="privacy-section">
+                    <div class="privacy-icon">🔒</div>
+                    <div class="privacy-content">
+                        <h3>Your Privacy is Our Priority</h3>
+                        <p>All information will be kept private and secure. We use industry-standard encryption to protect your data.</p>
+                        <div class="privacy-links">
+                            <a href="#">Privacy Policy</a>
+                            <a href="#">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="create-btn">Create Profile</button>
+                
+                <p class="terms-text">
+                    By creating an account, you agree to our <a href="#">Terms & Conditions</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simple form interactivity
+        document.querySelector('.upload-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Use the existing file input
+            const fileInput = document.getElementById('profile_image');
+            fileInput.click();
+        });
+        
+        // Handle file selection
+        document.getElementById('profile_image').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                // Update UI to show selected file
+                const fileName = e.target.files[0].name;
+                const uploadBtn = document.querySelector('.upload-btn');
+                uploadBtn.textContent = `Selected: ${fileName}`;
+                uploadBtn.style.background = '#10b981';
+                
+                // Show preview in circle
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const circle = document.querySelector('.photo-circle');
+                    circle.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Form validation (enhanced but allows submission)
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const requiredFields = [
+                {id: 'fullName', name: 'Full Name'},
+                {id: 'age', name: 'Age'},
+                {id: 'city', name: 'City'}, 
+                {selector: '.phone-number', name: 'Phone'},
+                {id: 'gender', name: 'Gender'},
+                {id: 'marital_status', name: 'Marital Status'},
+                {id: 'occupation', name: 'Occupation'},
+                {id: 'cnic', name: 'CNIC'}
+            ];
+            let isValid = true;
+            let missingFields = [];
+            
+            requiredFields.forEach(fieldConfig => {
+                let field;
+                if (fieldConfig.id) {
+                    field = document.getElementById(fieldConfig.id);
+                } else if (fieldConfig.selector) {
+                    field = document.querySelector(fieldConfig.selector);
+                }
+                
+                if (!field || !field.value.trim()) {
+                    isValid = false;
+                    missingFields.push(fieldConfig.name);
+                    if (field) {
+                        field.style.borderColor = '#ef4444';
+                    }
+                } else {
+                    if (field) {
+                        field.style.borderColor = '#d1d5db';
+                    }
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in these required fields: ' + missingFields.join(', '));
+                return false;
+            }
+            
+            // If validation passes, form will submit naturally to server
+        });
+
+        // Mobile menu toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.backgroundColor = 'white';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.padding = '1rem';
+                navLinks.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
+</body>
+</html>

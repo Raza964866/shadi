@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Status - FindLove</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .payment-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-item {
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #e1e8ed;
+        }
+
+        .status-verified {
+            background: #e8f5e8;
+            border-color: #00b894;
+            color: #2e7d32;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .status-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .payments-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .payments-table th,
+        .payments-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .payments-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .payments-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge-verified {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .no-payments {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .no-payments-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ddd;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 0 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #e1e8ed;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .flash-messages {
+            margin-bottom: 1rem;
+        }
+
+        .flash-message {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .flash-success {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .flash-info {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            .payment-card {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .payments-table {
+                font-size: 0.9rem;
+            }
+
+            .payments-table th,
+            .payments-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="header">
+            <h1>💳 Payment Status</h1>
+            <p>Track your payment and access status</p>
+        </div>
+
+        <div class="payment-card">
+            <div class="status-grid">
+                {% set verified_payment = payments | selectattr('verified', 'equalto', true) | first %}
+                {% if verified_payment %}
+                    <div class="status-item status-verified">
+                        <span class="status-icon">✅</span>
+                        <h3>Full Access Active</h3>
+                        <p>You have unlimited access to all features!</p>
+                        <small>Activated: {{ verified_payment.timestamp.strftime('%d %b %Y') }}</small>
+                    </div>
+                {% else %}
+                    <div class="status-item status-pending">
+                        <span class="status-icon">⏳</span>
+                        <h3>Limited Access</h3>
+                        <p>Pay to unlock all features</p>
+                    </div>
+                {% endif %}
+
+                <div class="status-item">
+                    <span class="status-icon">📊</span>
+                    <h3>Payment History</h3>
+                    <p>{{ payments | length }} payment(s) made</p>
+                </div>
+            </div>
+
+            {% if payments %}
+                <h3 style="margin-bottom: 1rem; color: #2c3e50;">Payment History</h3>
+                <table class="payments-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>JazzCash Number</th>
+                            <th>Transaction ID</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments %}
+                        <tr>
+                            <td>{{ payment.timestamp.strftime('%d %b %Y, %I:%M %p') }}</td>
+                            <td>Rs. {{ payment.amount }}</td>
+                            <td>{{ payment.jazzcash_number }}</td>
+                            <td>{{ payment.transaction_id }}</td>
+                            <td>
+                                {% if payment.status == 'Verified' %}
+                                    <span class="status-badge badge-verified">✅ Verified</span>
+                                {% elif payment.status == 'Rejected' %}
+                                    <span class="status-badge badge-rejected">❌ Rejected</span>
+                                {% else %}
+                                    <span class="status-badge badge-pending">⏳ Pending</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="no-payments">
+                    <div class="no-payments-icon">💳</div>
+                    <h3>No Payments Yet</h3>
+                    <p>You haven't made any payments. Pay to unlock full access!</p>
+                </div>
+            {% endif %}
+
+            <div class="action-buttons">
+                {% if not verified_payment %}
+                    <a href="{{ url_for('user.payment') }}" class="btn btn-primary">
+                        💰 Pay for Full Access
+                    </a>
+                {% endif %}
+                <a href="{{ url_for('user.find_match') }}" class="btn btn-secondary">
+                    🔍 Browse Profiles
+                </a>
+            </div>
+        </div>
+
+        <div class="payment-card" style="text-align: center; background: #f8f9fa; border: 2px dashed #ddd;">
+            <h4 style="color: #666; margin-bottom: 1rem;">💡 Need Help?</h4>
+            <p style="color: #666; margin-bottom: 1rem;">
+                If you've made a payment but it's still pending, please contact our support team.
+                Payments are usually verified within 24 hours.
+            </p>
+            <a href="{{ url_for('user.contact') }}" class="btn btn-secondary">
+                📞 Contact Support
+            </a>
+        </div>
+    </div>
+</body>
+</html>

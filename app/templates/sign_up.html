@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Shadi.com - It's Free!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .header {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .logo::before {
+            content: "💖";
+            margin-right: 8px;
+            font-size: 28px;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav a:hover {
+            color: #e91e63;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .mobile-menu span {
+            width: 25px;
+            height: 3px;
+            background: #333;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+        
+        /* Mobile Navigation Overlay */
+        .nav.mobile-active {
+            display: flex;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            flex-direction: column;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            z-index: 999;
+            gap: 1.5rem;
+        }
+        
+        /* Hamburger Animation */
+        .mobile-menu.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+        
+        .mobile-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .mobile-menu.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+        
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .form-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .form-section h1 {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-section p {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #e91e63;
+        }
+        
+        .form-group input::placeholder {
+            color: #999;
+        }
+        
+        .password-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .create-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #e91e63, #f06292);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-top: 10px;
+        }
+        
+        .create-btn:hover {
+            transform: translateY(-1px);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #e91e63;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .image-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .wedding-image {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background: linear-gradient(45deg, #f8bbd9, #e1bee7);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .wedding-scene {
+            width: 90%;
+            height: 90%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23f0f4f8"/><circle cx="100" cy="80" r="20" fill="%23ff6b9d"/><circle cx="130" cy="70" r="15" fill="%23ff8cc8"/><circle cx="160" cy="85" r="18" fill="%23ffa8e2"/><circle cx="190" cy="75" r="12" fill="%23ffb3e6"/><circle cx="220" cy="90" r="16" fill="%23ffc1e8"/><circle cx="250" cy="80" r="14" fill="%23ffcfea"/><circle cx="280" cy="95" r="20" fill="%23ffdaec"/><circle cx="310" cy="85" r="13" fill="%23ffe4ee"/><rect x="50" y="200" width="300" height="100" fill="%23e8f4f8" rx="10"/><rect x="180" y="160" width="40" height="80" fill="%23333"/><rect x="190" y="150" width="20" height="60" fill="%23fff" rx="10"/><circle cx="150" cy="180" r="25" fill="%23fff"/><circle cx="250" cy="180" r="25" fill="%23fff"/><rect x="140" y="200" width="20" height="40" fill="%23333"/><rect x="240" y="200" width="20" height="40" fill="%23fff"/></svg>') center/contain no-repeat;
+            border-radius: 12px;
+        }
+        
+        .footer {
+            background: white;
+            padding: 30px 0;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .footer-links a:hover {
+            color: #e91e63;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icon {
+            width: 32px;
+            height: 32px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        
+        .social-icon:hover {
+            background: #e91e63;
+            color: white;
+        }
+        
+        .copyright {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Enhanced Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: flex;
+            }
+            
+            .header-content {
+                padding: 0 1.5rem;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 30px 1.5rem;
+            }
+            
+            .form-section {
+                padding: 30px 25px;
+                margin-bottom: 20px;
+            }
+            
+            .form-section h1 {
+                font-size: 26px;
+                margin-bottom: 15px;
+            }
+            
+            .form-section p {
+                font-size: 15px;
+                margin-bottom: 25px;
+            }
+            
+            .image-section {
+                order: -1;
+            }
+            
+            .wedding-image {
+                height: 300px;
+                max-width: 400px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+                padding: 0 1.5rem;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                gap: 20px;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+            
+            .logo {
+                font-size: 20px;
+            }
+            
+            .logo::before {
+                font-size: 24px;
+            }
+            
+            .main-content {
+                padding: 20px 1rem;
+                gap: 25px;
+            }
+            
+            .form-section {
+                padding: 25px 20px;
+                border-radius: 8px;
+            }
+            
+            .form-section h1 {
+                font-size: 22px;
+            }
+            
+            .form-section p {
+                font-size: 14px;
+            }
+            
+            .form-group {
+                margin-bottom: 20px;
+            }
+            
+            .form-group input {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+            
+            .create-btn {
+                padding: 16px;
+                font-size: 16px;
+            }
+            
+            .wedding-image {
+                height: 250px;
+            }
+            
+            .footer-content {
+                padding: 0 1rem;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-links a {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">Shadi.com</a>
+            <nav class="nav">
+                <a href="{{ url_for('user.index') }}">Home</a>
+                <a href="{{ url_for('user.about') }}">About</a>
+                <a href="{{ url_for('user.contact') }}">Contact</a>
+                <a href="{{ url_for('user.sign_up') }}">Register</a>
+                <a href="{{ url_for('user.login') }}">Login</a>
+            </nav>
+            <div class="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="form-section">
+            <h1>Join Shadi.com – It's Free!</h1>
+            <p>Create your account to start finding the perfect match. Just fill in the details below to get started.</p>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div id="flashMessages" style="margin-bottom: 20px; transition: opacity 0.5s ease;">
+                        {% for category, message in messages %}
+                            <div class="flash-message" style="padding: 12px 20px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; {% if category == 'error' %}background: #ffe6e6; color: #d63031; border: 1px solid #fab1a0;{% elif category == 'warning' %}background: #fff3e0; color: #e17055; border: 1px solid #fdcb6e;{% else %}background: #d4edda; color: #155724; border: 1px solid #c3e6cb;{% endif %}" onclick="this.style.display='none'" title="Click to dismiss">
+                                {{ message }}
+                                <span style="float: right; font-weight: bold; margin-left: 10px;">&times;</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <script>
+                        setTimeout(function() {
+                            var flashContainer = document.getElementById('flashMessages');
+                            if (flashContainer) {
+                                flashContainer.style.opacity = '0';
+                                setTimeout(function() { flashContainer.style.display = 'none'; }, 500);
+                            }
+                        }, 5000);
+                    </script>
+                {% endif %}
+            {% endwith %}
+            
+            <form method="POST" action="{{ url_for('user.sign_up') }}">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    <div class="password-hint">Password must be at least 8 characters long</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                </div>
+                
+                <button type="submit" class="create-btn">Create Account</button>
+                
+                <div class="login-link">
+                    Already have an account? <a href="{{ url_for('user.login') }}">Login here</a>
+                </div>
+            </form>
+        </section>
+        
+        <section class="image-section">
+            <div class="wedding-image">
+                <div class="wedding-scene"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="copyright">© 2024 Shadi.com. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon">f</a>
+                <a href="#" class="social-icon">t</a>
+                <a href="#" class="social-icon">i</a>
+                <a href="#" class="social-icon">in</a>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile menu toggle functionality
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const nav = document.querySelector('.nav');
+            
+            mobileMenu.classList.toggle('active');
+            nav.classList.toggle('mobile-active');
+        });
+        
+        // Form validation enhancement
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match. Please try again.');
+                return false;
+            }
+            
+            if (password.length < 8) {
+                e.preventDefault();
+                alert('Password must be at least 8 characters long.');
+                return false;
+            }
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const nav = document.querySelector('.nav');
+            
+            if (!mobileMenu.contains(e.target) && !nav.contains(e.target)) {
+                mobileMenu.classList.remove('active');
+                nav.classList.remove('mobile-active');
+            }
+        });
+    </script>
+</body>
+</html>

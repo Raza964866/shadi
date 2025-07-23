@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email - Shadi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .verification-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .verification-code-input {
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 0.5rem;
+        }
+        .resend-btn {
+            background: none;
+            border: none;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="verification-container bg-white">
+            <div class="text-center mb-4">
+                <h2>Verify Your Email</h2>
+                <p class="text-muted">We've sent a 6-digit verification code to:</p>
+                <strong>{{ email }}</strong>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{% if category == 'error' %}danger{% elif category == 'warning' %}warning{% else %}success{% endif %} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <input type="hidden" name="email" value="{{ email }}">
+                
+                <div class="mb-3">
+                    <label for="verification_code" class="form-label">Enter Verification Code</label>
+                    <input type="text" 
+                           class="form-control verification-code-input" 
+                           id="verification_code" 
+                           name="verification_code" 
+                           placeholder="000000" 
+                           maxlength="6" 
+                           pattern="[0-9]{6}" 
+                           autocomplete="one-time-code"
+                           required>
+                    <div class="invalid-feedback" id="code-error"></div>
+                    <small class="form-text text-muted">Code expires in 10 minutes</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3" id="verify-btn" disabled>Verify Email</button>
+            </form>
+
+            <div class="text-center">
+                <p class="text-muted">Didn't receive the code?</p>
+                <form method="POST" action="{{ url_for('user.resend_verification') }}" style="display: inline;">
+                    <input type="hidden" name="email" value="{{ email }}">
+                    <button type="submit" class="resend-btn">Resend Code</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const codeInput = document.getElementById('verification_code');
+        const errorDiv = document.getElementById('code-error');
+        const verifyBtn = document.getElementById('verify-btn');
+        
+        // Validation function
+        function validateCode() {
+            const code = codeInput.value.trim();
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Clear previous validation states
+            codeInput.classList.remove('is-invalid', 'is-valid');
+            errorDiv.textContent = '';
+            
+            if (code === '') {
+                errorMessage = 'Please enter the verification code';
+                isValid = false;
+            } else if (code.length !== 6) {
+                errorMessage = 'Verification code must be exactly 6 digits';
+                isValid = false;
+            } else if (!/^\d{6}$/.test(code)) {
+                errorMessage = 'Verification code must contain only numbers';
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                codeInput.classList.add('is-invalid');
+                errorDiv.textContent = errorMessage;
+                errorDiv.style.display = 'block';
+                verifyBtn.disabled = true;
+            } else {
+                codeInput.classList.add('is-valid');
+                errorDiv.style.display = 'none';
+                verifyBtn.disabled = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Real-time validation on input
+        codeInput.addEventListener('input', function(e) {
+            const code = e.target.value;
+            
+            // Remove any non-numeric characters
+            if (!/^\d*$/.test(code)) {
+                e.target.value = code.replace(/\D/g, '');
+            }
+            
+            // Validate the code
+            validateCode();
+            
+            // Auto-submit when 6 valid digits are entered
+            if (code.length === 6 && validateCode()) {
+                // Add loading state
+                verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
+                verifyBtn.disabled = true;
+                
+                // Small delay to ensure user sees the complete code
+                setTimeout(() => {
+                    e.target.form.submit();
+                }, 800);
+            }
+        });
+        
+        // Prevent non-numeric characters on keypress
+        codeInput.addEventListener('keypress', function(e) {
+            if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Escape', 'Enter', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+        
+        // Prevent paste of non-numeric content
+        codeInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const paste = (e.clipboardData || window.clipboardData).getData('text');
+            const numericOnly = paste.replace(/\D/g, '').substring(0, 6);
+            e.target.value = numericOnly;
+            validateCode();
+        });
+        
+        // Form submission validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!validateCode()) {
+                e.preventDefault();
+                codeInput.focus();
+                return false;
+            }
+            
+            // Show loading state
+            verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
+            verifyBtn.disabled = true;
+        });
+        
+        // Focus on code input when page loads
+        window.addEventListener('load', function() {
+            codeInput.focus();
+        });
+    </script>
+</body>
+</html>
