@@ -3,7 +3,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.models import User, UserProfile, Payment, db
 from app.utils.auth import generate_verification_code, send_verification_email
-from app.jazzcash_client import JazzCashClient
 import secrets
 from datetime import datetime, timedelta
 from werkzeug.utils import secure_filename
@@ -81,11 +80,6 @@ def sign_up():
         
         try:
             db.session.add(new_user)
-            db.session.flush()  # Get user ID
-            
-            # Create empty profile
-            profile = UserProfile(user_id=new_user.id)
-            db.session.add(profile)
             db.session.commit()
             
             # Send verification email
@@ -259,6 +253,12 @@ def logout():
 @login_required
 def view_profile():
     profile = UserProfile.query.filter_by(user_id=current_user.id).first()
+    
+    # If user has no profile, redirect to create one
+    if not profile:
+        flash('Please create your profile first.', 'info')
+        return redirect(url_for('user.send_profile'))
+    
     return render_template('profile.html', profile=profile)
 
 @user.route('/edit_profile', methods=['GET', 'POST'])

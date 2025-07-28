@@ -1,6 +1,6 @@
-#!/usr/bin/python3.10
+#!/usr/bin/python3
 """
-WSGI configuration for PythonAnywhere deployment.
+WSGI configuration for AlwaysData deployment.
 This file configures the Flask application for production use.
 """
 
@@ -8,7 +8,7 @@ import sys
 import os
 
 # Add your project directory to sys.path
-project_home = '/home/yourusername/Shadi'
+project_home = os.path.dirname(os.path.abspath(__file__))
 if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 

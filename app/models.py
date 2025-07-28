@@ -43,7 +43,7 @@ class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     amount = db.Column(db.Numeric(10, 2), nullable=False)
-    payment_method = db.Column(db.String(20), default='manual')  # manual, jazzcash, etc
+    payment_method = db.Column(db.String(20), default='manual')  # manual, easypaisa, etc
     sender_number = db.Column(db.String(15))  # Number from which payment was sent
     receiver_number = db.Column(db.String(15))  # Admin's payment number
     purpose = db.Column(db.String(50), default='full_access')  # full_access

@@ -20,16 +20,6 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'dswo gubk ocba qduy'
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER') or 'syedrazah76@gmail.com'
     
-    # JazzCash API configuration
-    JAZZCASH_MERCHANT_ID = os.environ.get('JAZZCASH_MERCHANT_ID') or 'MC123456'  # Replace with your actual Merchant ID
-    JAZZCASH_PASSWORD = os.environ.get('JAZZCASH_PASSWORD') or 'your_password'  # Replace with your actual password
-    JAZZCASH_INTEGRITY_SALT = os.environ.get('JAZZCASH_INTEGRITY_SALT') or 'your_salt'  # Replace with your actual integrity salt
-    JAZZCASH_API_URL = 'https://sandbox.jazzcash.com.pk/ApplicationAPI/API/Payment/DoTransaction'  # Use production URL for live
-    JAZZCASH_INQUIRY_URL = 'https://sandbox.jazzcash.com.pk/ApplicationAPI/API/Payment/DoInquiry'  # Use production URL for live
-    JAZZCASH_RETURN_URL = os.environ.get('JAZZCASH_RETURN_URL') or 'http://localhost:5000/payment/callback'
-    JAZZCASH_VERSION = '1.1'
-    JAZZCASH_LANGUAGE = 'EN'
-    JAZZCASH_CURRENCY = 'PKR'
 
 class DevelopmentConfig(Config):
     DEBUG = True

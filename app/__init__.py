@@ -30,7 +30,7 @@ def create_app(config_name):
 
     # Register blueprints
     from .routes.user import user as user_blueprint
-    from .routes.admin import admin as admin_blueprint
+    from admin.routes import admin as admin_blueprint
     app.register_blueprint(user_blueprint)
     app.register_blueprint(admin_blueprint)
 
