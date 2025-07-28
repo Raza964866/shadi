@@ -27,6 +27,8 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
+    # PythonAnywhere free tier only supports SQLite
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///shadi.db'
 
 config = {
     'development': DevelopmentConfig,
